@@ -11,13 +11,15 @@ function [nifti_out] = load_compressed_nii(image_path)
 % ****************************************************************  
     s = clock;
     % assign a new tmp_id to each volume is useful when the same images are used in parallel
+    [folder, f] = fileparts(image_path);
     tmp_id = num2str(round(rand*1000*s(6)));
-    copyfile([image_path,'.nii.gz'], [image_path,'_',tmp_id,'.nii.gz']);
-    gunzip([image_path,'_',tmp_id,'.nii.gz']);
-    nifti_out = load_untouch_nii([image_path,'_',tmp_id,'.nii']);
-    delete([image_path,'_',tmp_id,'.nii']);
-    if exist([image_path,'_',tmp_id,'.nii.gz'],'file')
-        delete([image_path,'_',tmp_id,'.nii.gz']);
+    tmppath = fullfile('/','tmp',[f,'_', tmp_id,'.nii.gz']);
+    copyfile([image_path,'.nii.gz'], tmppath);
+    gunzip(tmppath);
+    nifti_out = load_untouch_nii(fullfile('/','tmp',[f,'_', tmp_id,'.nii']));
+    delete(fullfile('/','tmp',[f,'_', tmp_id,'.nii.gz']));
+    if exist(tmppath, 'file')
+        delete(tmppath);
     end
 end
 

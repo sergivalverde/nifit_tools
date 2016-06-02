@@ -12,8 +12,6 @@ function save_compressed_nii(nii_image, image_path)
     save_untouch_nii(nii_image, [image_path,'_tmp_.nii']); 
     gzip([image_path,'_tmp_.nii']);
     movefile([image_path,'_tmp_.nii.gz'], [image_path,'.nii.gz']);
-    % if current image exists delete it
-    if exist([image_path,'_tmp_.nii'],'file')
-        delete([image_path,'_tmp_.nii']);
-    end
+    delete([image_path,'_tmp_.nii']);
+   
 end
