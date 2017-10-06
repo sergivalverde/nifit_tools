@@ -21,7 +21,10 @@ function save_compressed_nii(nii_struct, output_path, untouch)
         untouch = false;
     end
     
-    tmpNII = [output_path,'_tmp_.nii'];
+    [pth, fname] = fileparts(output_path);
+    [~,fname] = fileparts(fname);
+    
+    tmpNII = [pth '/',fname,'_tmp_.nii'];
     tmpGZ = [tmpNII '.gz'];
     
     % create temporary nii file
